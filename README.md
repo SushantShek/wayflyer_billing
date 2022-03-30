@@ -32,6 +32,7 @@ hope you enjoy yourself!
 The assignment is to write a lightweight billing system to charge our customers daily. In the next stage of the interview
 process, you'll collaborate with an engineer on our team to discuss and extend your solution.
 
+
 To keep this exercise fair for all future candidates, *please keep your solution private*.
 
 ## The Exercise
@@ -41,6 +42,13 @@ commence billing the next day. Every day we'll charge them a pre-agreed percenta
 they've paid us back the amount, plus a small fee we charge for the service.
 
 Write a program that interacts with the API described below that correctly bills all our advances over the simulated
+=======
+Our core financial product is the Merchant Cash Advance (MCA), which is a form of revenue based financing. Our customers 
+will sell us their future sales in return for cash now. We'll transfer them the cash directly to their bank account, then 
+commence billing the next day. Every day we'll charge them a pre-agreed percentage of their previous days sales until 
+they've paid us back the amount, plus a small fee we charge for the service.
+
+Write a program that interacts with the API described below that correctly bills all our advances over the simulated 
 period.
 
 
@@ -59,11 +67,13 @@ decimal places encoding the lowest denomination (i.e. "12345.67").
 
 All dates should be encoded as `{yyyy}-{mm}-{dd}`, i.e. `2022-03-21`.
 
+
 The base URL for all requests is: `https://billing.eng-test.wayflyer.com`. This is a live server with sample data you should use to develop your code.
 
 
 ### Advances
 Fetch all advances issued to customers.
+
 <table>
 <tr>
 <td>
@@ -143,6 +153,7 @@ Errors:
 
 ### Charges
 Issue repayment charges against a given mandate
+
 <table>
 <tr>
 <td>
