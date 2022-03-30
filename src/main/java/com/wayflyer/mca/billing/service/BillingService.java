@@ -56,7 +56,9 @@ public class BillingService {
         log.info(customer.toString());
         storage.saveAdvance(customer.getAdvances());
         try {
-            billing.doBilling(customer, this);
+             if(!billing.doBilling(customer, this)){
+               return Collections.EMPTY_LIST;
+            };
         }catch(Exception ex){
             customer.getAdvances().forEach( adv ->storage.addFailedBillingsToRetry(adv));
         }

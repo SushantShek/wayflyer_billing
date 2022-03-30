@@ -20,6 +20,7 @@ public class Billing {
     BillingStorage storage;
 
     BigDecimal deductionThreshold = new BigDecimal(10000);
+    BigDecimal minThreshold = new BigDecimal(1);
     BigDecimal zero = new BigDecimal(0);
 
     public Billing(BillingStorage storage){
@@ -32,6 +33,7 @@ public class Billing {
             if (validateTransaction(rev)) {
                 Revenue revenue = service.getRevenueForCustomer(rev.getCustomer_id(), DateUtil.backDate(2).toString());
                 BigDecimal toDeduct = getDaysSalesChargeableAmount(revenue.getAmount(), rev.getRepayment_percentage());
+
                 if (toDeduct.compareTo(deductionThreshold) > 0) {
                     toDeduct = deductionThreshold;
                 }
@@ -75,16 +77,16 @@ public class Billing {
         var totalAdvance = new BigDecimal(adv.getTotal_advanced());
         var serviceFee = new BigDecimal(adv.getFee());
         if (totalAdvance.compareTo(chargeForTheDay) > 0) {
-            adv.setTotal_advanced(totalAdvance.subtract(chargeForTheDay).toString());
+            adv.setTotal_advanced(totalAdvance.subtract(chargeForTheDay.subtract(minThreshold)).toString());
             //TODO - Map set totalAdvance to totalAdv - dayChargeable
         } else {
             //make total Advance ==0
             chargeForTheDay = chargeForTheDay.subtract(totalAdvance);
             adv.setTotal_advanced(zero.toString());
             if (serviceFee.compareTo(chargeForTheDay) > 0) {
-                adv.setFee(serviceFee.subtract(chargeForTheDay).toString());
+                adv.setFee(serviceFee.subtract(chargeForTheDay.subtract(minThreshold)).toString());
             } else {
-                chargeForTheDay = chargeForTheDay.subtract(serviceFee);
+                chargeForTheDay = chargeForTheDay.subtract(serviceFee).subtract(minThreshold);
                 adv.setFee(zero.toString());
 
                 // TODO - UPDATE the Service call with Actual amount charged
